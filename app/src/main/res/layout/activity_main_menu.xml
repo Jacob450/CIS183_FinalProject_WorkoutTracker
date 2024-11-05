@@ -10,35 +10,25 @@
     <Button
         android:id="@+id/btn_mm_pastsessions"
         android:layout_width="185dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="90dp"
-        android:layout_marginBottom="114dp"
-        android:text="View Past Sessions"
-        app:layout_constraintBottom_toTopOf="@+id/btn_mm_newsession"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="62dp"
+        android:text="View My Sessions"
+        tools:layout_editor_absoluteX="113dp"
+        tools:layout_editor_absoluteY="270dp" />
 
     <Button
         android:id="@+id/btn_mm_progress"
         android:layout_width="185dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="240dp"
-        android:text="View Progress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_mm_newsession" />
+        android:layout_height="62dp"
+        android:text="View My Progress"
+        tools:layout_editor_absoluteX="113dp"
+        tools:layout_editor_absoluteY="189dp" />
 
     <Button
         android:id="@+id/btn_mm_newsession"
         android:layout_width="185dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="101dp"
+        android:layout_height="62dp"
         android:text="Start New Session"
-        app:layout_constraintBottom_toTopOf="@+id/btn_mm_progress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_mm_pastsessions" />
+        tools:layout_editor_absoluteX="113dp"
+        tools:layout_editor_absoluteY="101dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
