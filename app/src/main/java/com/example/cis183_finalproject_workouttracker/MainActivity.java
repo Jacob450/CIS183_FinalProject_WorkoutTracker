@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         db = new DatabaseHelper(this);
-        db.initUsers();
+        db.initAllTables();
         login();
 
 

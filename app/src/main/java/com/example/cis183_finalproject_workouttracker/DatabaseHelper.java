@@ -16,15 +16,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String muscle_groups_table = "muscle_groups";
 
     public DatabaseHelper(Context c){
-        super(c,database_name, null, 2);
+        super(c,database_name, null, 3);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE " + users_table_name + "(userName varchar(50) primary key not null, password varchar(50), fName varchar (50), lName varchar(50), weight integer );");
             db.execSQL("CREATE TABLE " + sessions_table_name + "(sessionID integer primary key autoincrement not null, sessionUserName varchar(50), sessionName varchar(50), sessionDate varchar(50));");
-            db.execSQL("CREATE TABLE " + lifts_table_name+ "(liftID integer primary key autoincrement not null, sessionID integer, liftType varchar(50), reps integer, weight integer);");
-            db.execSQL("CREATE TABLE " + lift_types_table_name + "(liftName varchar(50) primary key, muscleGroup varchar (50))");
-            db.execSQL("CREATE TABLE " + muscle_groups_table + "(muscleGroupName varchar(50) primary key not null)");
+            db.execSQL("CREATE TABLE " + lifts_table_name+ "(liftID integer primary key autoincrement not null, sessionID integer, liftTypeID integer, reps integer, weight integer);");
+            db.execSQL("CREATE TABLE " + lift_types_table_name + "(liftTypeID integer primary key autoincrement not null, liftName varchar(50), muscleGroupID integer)");
+            db.execSQL("CREATE TABLE " + muscle_groups_table + "(muscleGroupID integer primary key autoincrement not null ,muscleGroupName varchar(50))");
     }
 
     @Override
@@ -39,13 +39,65 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public void initAllTables(){
+        initUsers();
+        initSessions();
+        initLifts();
+        initLiftTypes();
+        initMuscleGroups();
+    }
+
     public void initUsers(){
         SQLiteDatabase db = this.getReadableDatabase();
         if(countRecordsFromTable(users_table_name) == 0){
             db.execSQL("INSERT INTO "+ users_table_name +"(userName, password, fname, lname, weight) VALUES ('jperez4', '1234', 'Jacob', 'Perez', '140');");
+            db.execSQL("INSERT INTO "+ users_table_name +"(userName, password, fname, lname, weight) VALUES ('dperez', '1111', 'Dylan', 'Perez', '120');");
+            db.execSQL("INSERT INTO "+ users_table_name +"(userName, password, fname, lname, weight) VALUES ('juicyj', '0000', 'Justin', 'McDonald', '180');");
         }
         db.close();
     }
+
+    public void initSessions(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        if(countRecordsFromTable(users_table_name) == 0){
+            db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionName, sessionDate) VALUES ('jperez4', 'chest', '11/30/2024');");
+            db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionName, sessionDate) VALUES ('dperez', 'legs', '11/30/2024');");
+            db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionName, sessionDate) VALUES ('juicyj', 'back', '11/30/2024');");
+        }
+        db.close();
+    }
+
+    public void initLifts(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        if(countRecordsFromTable(users_table_name) == 0){
+            db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('1', '1', '8', '185');");
+            db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('1', '2', '8', '145');");
+            db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('1', '3', '8', '80');");
+        }
+        db.close();
+    }
+
+    public void initLiftTypes(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        if(countRecordsFromTable(users_table_name) == 0){
+            db.execSQL("INSERT INTO "+ lift_types_table_name +"(liftName, muscleGroupID) VALUES ('Bench', '1');");
+            db.execSQL("INSERT INTO "+ lift_types_table_name +"(liftName, muscleGroupID) VALUES ('Incline Bench', '2');");
+            db.execSQL("INSERT INTO "+ lift_types_table_name +"(liftName, muscleGroupID) VALUES ('Tricep pushdowns', '3');");
+        }
+        db.close();
+    }
+
+    public void initMuscleGroups(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        if(countRecordsFromTable(users_table_name) == 0){
+            db.execSQL("INSERT INTO "+ muscle_groups_table+"(muscleGroupName) VALUES ('Chest');");
+            db.execSQL("INSERT INTO "+ muscle_groups_table+"(muscleGroupName) VALUES ('Upper Chest');");
+            db.execSQL("INSERT INTO "+ muscle_groups_table+"(muscleGroupName) VALUES ('Triceps');");
+
+        }
+        db.close();
+    }
+
 
 
 
