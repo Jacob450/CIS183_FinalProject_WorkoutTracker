@@ -2,7 +2,6 @@ package com.example.cis183_finalproject_workouttracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,9 +9,6 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
     EditText et_username;
@@ -62,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     //if username exists and matches password then set logged in user
                     tv_error.setVisibility(View.INVISIBLE);
-                    LoggedUser.user = db.getUserGivenUserName(un);
+                    Logged.user = db.getUserGivenUserName(un);
                     startActivity(new Intent(MainActivity.this, MainMenu.class));
 
                 }

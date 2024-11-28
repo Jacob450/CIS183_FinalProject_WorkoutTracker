@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String database_name = "workout_tracker.db";
     private static final String users_table_name = "Users";
@@ -16,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String muscle_groups_table = "muscle_groups";
 
     public DatabaseHelper(Context c){
-        super(c,database_name, null, 3);
+        super(c,database_name, null, 8);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -48,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void initUsers(){
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         if(countRecordsFromTable(users_table_name) == 0){
             db.execSQL("INSERT INTO "+ users_table_name +"(userName, password, fname, lname, weight) VALUES ('jperez4', '1234', 'Jacob', 'Perez', '140');");
             db.execSQL("INSERT INTO "+ users_table_name +"(userName, password, fname, lname, weight) VALUES ('dperez', '1111', 'Dylan', 'Perez', '120');");
@@ -58,28 +60,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void initSessions(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        if(countRecordsFromTable(users_table_name) == 0){
+        SQLiteDatabase db = this.getWritableDatabase();
+        if(countRecordsFromTable(sessions_table_name) == 0){
             db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionName, sessionDate) VALUES ('jperez4', 'chest', '11/30/2024');");
             db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionName, sessionDate) VALUES ('dperez', 'legs', '11/30/2024');");
             db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionName, sessionDate) VALUES ('juicyj', 'back', '11/30/2024');");
+            db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionName, sessionDate) VALUES ('jperez4', 'chest', '11/31/2024');");
         }
         db.close();
     }
 
     public void initLifts(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        if(countRecordsFromTable(users_table_name) == 0){
+        SQLiteDatabase db = this.getWritableDatabase();
+        if(countRecordsFromTable(lifts_table_name) == 0){
+            //jacobs first session
             db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('1', '1', '8', '185');");
             db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('1', '2', '8', '145');");
             db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('1', '3', '8', '80');");
+            //jacobs second session
+            db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('4', '1', '6', '195');");
+            db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('4', '2', '6', '155');");
+            db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('4', '3', '6', '90');");
         }
         db.close();
     }
 
     public void initLiftTypes(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        if(countRecordsFromTable(users_table_name) == 0){
+        SQLiteDatabase db = this.getWritableDatabase();
+        if(countRecordsFromTable(lift_types_table_name) == 0){
             db.execSQL("INSERT INTO "+ lift_types_table_name +"(liftName, muscleGroupID) VALUES ('Bench', '1');");
             db.execSQL("INSERT INTO "+ lift_types_table_name +"(liftName, muscleGroupID) VALUES ('Incline Bench', '2');");
             db.execSQL("INSERT INTO "+ lift_types_table_name +"(liftName, muscleGroupID) VALUES ('Tricep pushdowns', '3');");
@@ -88,8 +96,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void initMuscleGroups(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        if(countRecordsFromTable(users_table_name) == 0){
+        SQLiteDatabase db = this.getWritableDatabase();
+        if(countRecordsFromTable(muscle_groups_table) == 0){
             db.execSQL("INSERT INTO "+ muscle_groups_table+"(muscleGroupName) VALUES ('Chest');");
             db.execSQL("INSERT INTO "+ muscle_groups_table+"(muscleGroupName) VALUES ('Upper Chest');");
             db.execSQL("INSERT INTO "+ muscle_groups_table+"(muscleGroupName) VALUES ('Triceps');");
@@ -98,7 +106,75 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    //Getter querys
 
+    public ArrayList<Lift> getAllLiftsGivenUsername(String un){
+        ArrayList<Integer> sessionIDs = new ArrayList<Integer>();
+        //getting session id
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT sessionID FROM " + sessions_table_name + " WHERE sessionUserName = 'jperez4';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+        //putting all session ids into an array
+        if(cursor.moveToFirst()){
+            do{
+                int id = cursor.getInt(0);
+                sessionIDs.add(id);
+                Log.d("SessionID: ", String.valueOf(id));
+            }while (cursor.moveToNext());
+
+            //getting all lifts with matching session id
+            ArrayList<Lift> userLifts = new ArrayList<Lift>();
+            for(int i =0; sessionIDs.size() != i; i++){
+                userLifts.addAll(getLiftsFromSessionGivenSessionID(sessionIDs.get(i)));
+            }
+            return userLifts;
+        }else{
+            Log.e("DB Error:", "Could not find sessionid given " + un);
+            return null;
+        }
+
+
+
+
+    }
+
+    public ArrayList<Lift> getLiftsFromSessionGivenSessionID(int SID){
+        Lift lift;
+        ArrayList<Lift> sessionLifts = new ArrayList<Lift>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT liftTypeID, reps, weight FROM " + lifts_table_name + " WHERE sessionID = '"+SID+"';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+
+        if(cursor.moveToFirst()){
+
+            do{
+                lift = new Lift();
+                lift.setLiftType(getLiftTypeGivenLiftTypeID(cursor.getInt(0)));
+                lift.setReps(cursor.getInt(1));
+                lift.setWeight(cursor.getInt(2));
+                Log.i("Lift: ", lift.getLiftType()+", "+lift.getReps()+", "+lift.getWeight());
+                sessionLifts.add(lift);
+            }while(cursor.moveToNext());
+
+            return sessionLifts;
+        }else{
+            Log.e("DB Error: ", "Could not get lifts given Session ID: "+SID);
+            return null;
+        }
+    }
+
+    public String getLiftTypeGivenLiftTypeID(int LID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT liftName FROM " + lift_types_table_name + " WHERE liftTypeID = '"+LID+"';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+
+        if(cursor.moveToFirst()){
+           return cursor.getString(0);
+        }else{
+            Log.e("DB Error: ", "Could not get lift type given lift type ID: "+LID);
+            return null;
+        }
+    }
 
 
     public User getUserGivenUserName(String un){
@@ -116,6 +192,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return u;
         }else{
             Log.e("DB Error:", "Could not find User given: " +un);
+            return null;
+        }
+
+    }
+
+    public ArrayList<String> getAllLiftTypes(){
+        ArrayList<String> lt = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT liftName FROM " + lift_types_table_name + ";";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                lt.add(cursor.getString(0));
+            }while(cursor.moveToNext());
+            return  lt;
+        }else{
+            Log.e("DB Error:", "Could not find any lift types");
             return null;
         }
 

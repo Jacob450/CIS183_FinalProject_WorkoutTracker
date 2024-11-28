@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_alcc_addnewlift"
+        android:layout_width="18dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:text="+"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_alcc_removethislift"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sp_alcc_liftTypes"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="69dp"
+        android:layout_marginBottom="6dp"
+        android:text="Lift Type"
+        app:layout_constraintBottom_toTopOf="@+id/sp_alcc_liftTypes"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_alcc_addrep"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_alcc_subtractrep"
+        app:layout_constraintEnd_toStartOf="@+id/tv_alcc_subtractrep"
+        app:layout_constraintStart_toEndOf="@+id/et_alcc_reps" />
+
+    <Spinner
+        android:id="@+id/sp_alcc_liftTypes"
+        android:layout_width="145dp"
+        android:layout_height="45dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_alcc_reps"
+        app:layout_constraintEnd_toEndOf="@+id/textView11"
+        app:layout_constraintStart_toEndOf="@+id/textView11"
+        app:layout_constraintTop_toTopOf="@+id/et_alcc_reps" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="Reps"
+        app:layout_constraintBottom_toTopOf="@+id/sp_alcc_liftTypes"
+        app:layout_constraintStart_toEndOf="@+id/sp_alcc_liftTypes" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="94dp"
+        android:text="Weight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/et_alcc_reps"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_alcc_subtractrep"
+        android:layout_width="18dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="81dp"
+        android:layout_marginEnd="63dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_alcc_weight"
+        app:layout_constraintEnd_toEndOf="@+id/et_alcc_weight"
+        app:layout_constraintStart_toStartOf="@+id/et_alcc_reps"
+        app:layout_constraintTop_toTopOf="@+id/et_alcc_weight" />
+
+    <EditText
+        android:id="@+id/et_alcc_weight"
+        android:layout_width="62dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/textView13"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <EditText
+        android:id="@+id/et_alcc_reps"
+        android:layout_width="63dp"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_alcc_addrep"
+        app:layout_constraintEnd_toEndOf="@+id/textView12"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toTopOf="@+id/tv_alcc_addrep" />
+
+    <TextView
+        android:id="@+id/tv_alcc_removethislift"
+        android:layout_width="18dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
+        android:text="-"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_alcc_weight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
