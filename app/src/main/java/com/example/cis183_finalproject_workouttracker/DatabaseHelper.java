@@ -106,6 +106,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    //Inserting into DataBase
+    
+
     //Getter querys
 
     public ArrayList<Lift> getAllLiftsGivenUsername(String un){

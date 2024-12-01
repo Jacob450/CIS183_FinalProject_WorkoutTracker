@@ -38,6 +38,7 @@ public class NewSession extends AppCompatActivity {
 
     }
 
+
     private void confirmNewSession(){
         btn_addNewSession.setOnClickListener(new View.OnClickListener() {
             @Override

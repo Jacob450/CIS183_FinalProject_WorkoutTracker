@@ -37,7 +37,6 @@ public class NewSessionListAdapter extends BaseAdapter {
         Logged.liftsToAdd = new ArrayList<Lift>();
     }
 
-
     @Override
     public int getCount() {
         return lifts.size();
