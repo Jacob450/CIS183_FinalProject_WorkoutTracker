@@ -1,6 +1,8 @@
 package com.example.cis183_finalproject_workouttracker;
 
-public class MySession {
+import java.io.Serializable;
+
+public class MySession implements Serializable {
     private int ID;
     private String userName;
     private String name;

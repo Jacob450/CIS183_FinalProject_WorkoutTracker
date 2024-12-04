@@ -7,9 +7,6 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainMenu extends AppCompatActivity {
     Button btn_pastSessions;
@@ -44,7 +41,7 @@ public class MainMenu extends AppCompatActivity {
         btn_myProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainMenu.this, MyProgress.class));
+                startActivity(new Intent(MainMenu.this, AllSessions.class));
             }
         });
     }

@@ -9,9 +9,6 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class DeleteLift extends AppCompatActivity {
     Button btn_yes;
@@ -50,7 +47,7 @@ public class DeleteLift extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 db.deleteLift(Logged.liftToDelete.getLiftID());
-                startActivity(new Intent(DeleteLift.this, MyProgress.class));
+                startActivity(new Intent(DeleteLift.this, AllSessions.class));
             }
         });
 

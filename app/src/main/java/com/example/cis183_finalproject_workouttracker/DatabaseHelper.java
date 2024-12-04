@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String database_name = "workout_tracker.db";
@@ -130,7 +131,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //Getter query's=============================================================
-
+    public int getLiftTypeID(String liftName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT liftTypeID FROM " + lift_types_table_name + " WHERE liftName = '"+liftName+"';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+        if(cursor.moveToFirst()){
+            return cursor.getInt(0);
+        }else{
+            Log.e("DB Error", "Could not find lift Type ID Given: "+ liftName);
+            return -999;
+        }
+    }
     public ArrayList<MySession> getAllSessionsForUser(String userName){
         ArrayList<MySession> sessions = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -146,6 +157,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 s.setUserName(userName);
                 sessions.add(s);
             }while (cursor.moveToNext());
+            Collections.reverse(sessions);
             return sessions;
         }else{
             Log.e("DB Error", "Could not find any sessions for user " +userName);
@@ -183,8 +195,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             //getting all lifts with matching session id
             ArrayList<Lift> userLifts = new ArrayList<Lift>();
             for(int i =0; sessionIDs.size() != i; i++){
-                userLifts.addAll(getLiftsFromSessionGivenSessionID(sessionIDs.get(i)));
+                userLifts.addAll(getLiftsFromSession(sessionIDs.get(i)));
             }
+            Collections.reverse(userLifts);
             return userLifts;
         }else{
             Log.e("DB Error:", "Could not find sessionid given " + un);
@@ -196,7 +209,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<Lift> getLiftsFromSessionGivenSessionID(int SID){
+    public ArrayList<Lift> getLiftsFromSession(int SID){
         Lift lift;
         ArrayList<Lift> sessionLifts = new ArrayList<Lift>();
         SQLiteDatabase db = this.getReadableDatabase();

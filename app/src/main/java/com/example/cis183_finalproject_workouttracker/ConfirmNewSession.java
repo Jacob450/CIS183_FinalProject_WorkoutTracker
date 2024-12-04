@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ConfirmNewSession extends AppCompatActivity {
@@ -19,6 +20,7 @@ public class ConfirmNewSession extends AppCompatActivity {
     Button btn_goBack;
     Button btn_confirm;
     TextView tv_sessionName;
+
 
 
     @Override
@@ -32,7 +34,9 @@ public class ConfirmNewSession extends AppCompatActivity {
         tv_sessionName = findViewById(R.id.tv_cns_sessionName);
 
         db = new DatabaseHelper(this);
+        //Remove dummy lift
 
+        Logged.liftsToAdd.remove(Logged.liftsToAdd.size()-1);
         getSessionName();
         fillListView();
         goBack();
@@ -83,6 +87,7 @@ public class ConfirmNewSession extends AppCompatActivity {
             public void onClick(View view) {
                 Intent newSession = new Intent(ConfirmNewSession.this, NewSession.class);
                 newSession.putExtra("FromCNS", "CNS");
+                Logged.liftsToAdd.add(new Lift());
                 finish();
                 //tartActivity(newSession);
             }

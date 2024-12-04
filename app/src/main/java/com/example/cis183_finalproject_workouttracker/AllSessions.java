@@ -10,15 +10,12 @@ import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MyProgress extends AppCompatActivity {
-    ArrayList<Lift> lifts;
+public class AllSessions extends AppCompatActivity {
+    ArrayList<MySession> sessions;
     DatabaseHelper db;
     ListView lv_userLifts;
 
@@ -30,26 +27,25 @@ public class MyProgress extends AppCompatActivity {
         db = new DatabaseHelper(this);
         lv_userLifts = findViewById(R.id.lv_mp_userLifts);
 
-        if(Logged.user != null){
-            lifts = db.getAllLiftsGivenUsername(Logged.user.getUserName());
-            Collections.reverse(lifts);
-        }
+        sessions = db.getAllSessionsForUser(Logged.user.getUserName());
 
 
 
         fillListView();
-        deleteLift();
+        loadSession();
 
     }
 
-    private void deleteLift(){
+    private void loadSession(){
         lv_userLifts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("Clicked", lifts.get(i).getLiftType());
-                Logged.liftToDelete = lifts.get(i);
+                //create intent
+                Intent viewSession = new Intent(AllSessions.this, ViewSession.class);
+                MySession session = sessions.get(i);
 
-                startActivity(new Intent(MyProgress.this, DeleteLift.class));
+                viewSession.putExtra("Session", session);
+                startActivity(viewSession);
                 return false;
             }
         });
