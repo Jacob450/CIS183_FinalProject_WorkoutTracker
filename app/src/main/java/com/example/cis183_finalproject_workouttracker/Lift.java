@@ -1,14 +1,19 @@
 package com.example.cis183_finalproject_workouttracker;
 
 public class Lift {
+    private int LiftID;
+    private String liftType;
+    private int liftTypeID;
+    private int reps;
+    private int weight;
 
-    String liftType;
+    public int getLiftID() {
+        return LiftID;
+    }
 
-
-
-    int liftTypeID;
-    int reps;
-    int weight;
+    public void setLiftID(int liftID) {
+        LiftID = liftID;
+    }
 
     public int getLiftTypeID() {
         return liftTypeID;

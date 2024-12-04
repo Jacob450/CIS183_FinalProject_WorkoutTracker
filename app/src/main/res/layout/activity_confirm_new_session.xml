@@ -8,7 +8,7 @@
     tools:context=".ConfirmNewSession">
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/tv_cns_sessionName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -24,8 +24,8 @@
 
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="267dp"
+        android:layout_height="48dp"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="1dp"
         android:fontFamily="@font/audiowide"

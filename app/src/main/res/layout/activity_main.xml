@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#121212"
     tools:context=".MainActivity">
 
     <TextView
@@ -14,6 +15,7 @@
         android:layout_marginBottom="55dp"
         android:fontFamily="@font/audiowide"
         android:text="Login"
+        android:textColor="#D0BCFF"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/et_main_username"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="1dp"
         android:text="UserName"
+        android:textColor="#D0BCFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/et_main_username"
         app:layout_constraintEnd_toStartOf="@+id/textView4" />
@@ -35,6 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Password"
+        android:textColor="#D0BCFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/et_main_password"
         app:layout_constraintStart_toStartOf="@+id/et_main_username" />
@@ -47,6 +51,7 @@
         android:ems="10"
         android:inputType="textPassword"
         android:text="1234"
+        android:textColor="#D0BCFF"
         app:layout_constraintBottom_toTopOf="@+id/tv_main_error"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/et_main_username" />
@@ -59,6 +64,7 @@
         android:ems="10"
         android:inputType="text"
         android:text="jperez4"
+        android:textColor="#D0BCFF"
         app:layout_constraintBottom_toTopOf="@+id/et_main_password"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -68,7 +74,10 @@
         android:layout_width="143dp"
         android:layout_height="56dp"
         android:layout_marginBottom="260dp"
+        android:backgroundTint="#D0BCFF"
+
         android:text="Login"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

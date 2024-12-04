@@ -2,12 +2,9 @@ package com.example.cis183_finalproject_workouttracker;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -16,7 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class NewSessionListAdapter extends BaseAdapter {
+public class AddLiftListAdapter extends BaseAdapter {
     Context context;
     ArrayList<Lift> lifts;
     DatabaseHelper db;
@@ -29,7 +26,7 @@ public class NewSessionListAdapter extends BaseAdapter {
 
 
 
-    NewSessionListAdapter(Context c){
+    AddLiftListAdapter(Context c){
         context = c;
         lifts = new ArrayList<>();
         db = new DatabaseHelper(c);
@@ -75,6 +72,7 @@ public class NewSessionListAdapter extends BaseAdapter {
             et_reps.setEnabled(true);
             et_weight.setEnabled(true);
             sp_liftTypes.setEnabled(true);
+            tv_removeLift.setVisibility(View.INVISIBLE);
         }
 
         return view;
@@ -119,6 +117,7 @@ public class NewSessionListAdapter extends BaseAdapter {
                     Logged.liftsToAdd.add(lifts.get(index));
                     lifts.add(new Lift());
                     tv_addLift.setVisibility(View.INVISIBLE);
+                    tv_removeLift.setVisibility(View.VISIBLE);
                     et_reps.setEnabled(false);
                     et_weight.setEnabled(false);
                     sp_liftTypes.setEnabled(false);

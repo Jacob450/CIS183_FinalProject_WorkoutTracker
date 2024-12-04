@@ -105,17 +105,72 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
     }
+    //Deleting from Database
+
+    public void deleteLift(int liftID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + lifts_table_name + " WHERE liftID = '"+liftID+"'");
+        db.close();
+    }
 
     //Inserting into DataBase
-    
+    public void addSessionToDB(String un, String sn, String sd){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO " + sessions_table_name + "(sessionUserName, sessionName, sessionDate) VALUES ('"+un+"','"+sn+"', '"+sd+"')");
+        db.close();
 
-    //Getter querys
+    }
+
+    public void addLiftToDB(int sessionID, Lift lift){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO " + lifts_table_name + "(sessionID, liftTypeID, reps, weight) VALUES ('"+sessionID+"', '"+lift.getLiftTypeID()+"', '"+lift.getReps()+"', '"+lift.getWeight()+"')");
+        db.close();
+    }
+
+
+    //Getter query's=============================================================
+
+    public ArrayList<MySession> getAllSessionsForUser(String userName){
+        ArrayList<MySession> sessions = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT sessionID, sessionName, sessionDate FROM " + sessions_table_name + " WHERE sessionUserName = '"+userName+"';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                MySession s = new MySession();
+                s.setID(cursor.getInt(0));
+                s.setName(cursor.getString(1));
+                s.setDate(cursor.getString(2));
+                s.setUserName(userName);
+                sessions.add(s);
+            }while (cursor.moveToNext());
+            return sessions;
+        }else{
+            Log.e("DB Error", "Could not find any sessions for user " +userName);
+            return null;
+        }
+    }
+
+    public int getLastSessionIDForUser(String userName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT sessionID FROM " + sessions_table_name + " WHERE sessionUserName = '"+userName+"';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+
+        if(cursor.moveToLast()){
+            return cursor.getInt(0);
+        }else{
+            Log.e("DB Error:", "Could not find sessionId given " + userName);
+            return -999;
+        }
+    }
 
     public ArrayList<Lift> getAllLiftsGivenUsername(String un){
         ArrayList<Integer> sessionIDs = new ArrayList<Integer>();
         //getting session id
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectStatement = "SELECT sessionID FROM " + sessions_table_name + " WHERE sessionUserName = 'jperez4';";
+        String selectStatement = "SELECT sessionID FROM " + sessions_table_name + " WHERE sessionUserName = '"+un+"';";
         Cursor cursor = db.rawQuery(selectStatement, null);
         //putting all session ids into an array
         if(cursor.moveToFirst()){
@@ -145,16 +200,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Lift lift;
         ArrayList<Lift> sessionLifts = new ArrayList<Lift>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectStatement = "SELECT liftTypeID, reps, weight FROM " + lifts_table_name + " WHERE sessionID = '"+SID+"';";
+        String selectStatement = "SELECT liftID, liftTypeID, reps, weight FROM " + lifts_table_name + " WHERE sessionID = '"+SID+"';";
         Cursor cursor = db.rawQuery(selectStatement, null);
 
         if(cursor.moveToFirst()){
 
             do{
                 lift = new Lift();
-                lift.setLiftType(getLiftTypeGivenLiftTypeID(cursor.getInt(0)));
-                lift.setReps(cursor.getInt(1));
-                lift.setWeight(cursor.getInt(2));
+                lift.setLiftID(cursor.getInt(0));
+                lift.setLiftType(getLiftTypeGivenLiftTypeID(cursor.getInt(1)));
+                lift.setReps(cursor.getInt(2));
+                lift.setWeight(cursor.getInt(3));
                 Log.i("Lift: ", lift.getLiftType()+", "+lift.getReps()+", "+lift.getWeight());
                 sessionLifts.add(lift);
             }while(cursor.moveToNext());
@@ -162,7 +218,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return sessionLifts;
         }else{
             Log.e("DB Error: ", "Could not get lifts given Session ID: "+SID);
-            return null;
+            return sessionLifts;
         }
     }
 
