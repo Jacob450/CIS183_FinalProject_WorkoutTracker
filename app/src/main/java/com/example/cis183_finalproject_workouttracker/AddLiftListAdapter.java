@@ -178,7 +178,10 @@ public class AddLiftListAdapter extends BaseAdapter {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 EditText r = view.findViewById(R.id.et_alcc_reps);
-                reps = Integer.parseInt(r.getText().toString());
+                if(!r.getText().toString().isEmpty()){
+                    reps = Integer.parseInt(r.getText().toString());
+                }
+
                 return false;
             }
         });
@@ -187,7 +190,10 @@ public class AddLiftListAdapter extends BaseAdapter {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 EditText w = view.findViewById(R.id.et_alcc_weight);
-                weight =  Integer.parseInt(w.getText().toString());
+                if(!w.getText().toString().isEmpty()){
+                    weight =  Integer.parseInt(w.getText().toString());
+                }
+
                 return false;
             }
         });

@@ -11,21 +11,22 @@ import java.util.ArrayList;
 
 public class VolumeByLiftListAdapter extends BaseAdapter {
     Context context;
-    ArrayList<Lift>lifts;
-
-    VolumeByLiftListAdapter(Context c, ArrayList<Lift> l){
+    ArrayList<String> liftNames;
+    ArrayList<Integer> volumes;
+    VolumeByLiftListAdapter(Context c, ArrayList<String> l, ArrayList<Integer> v){
         context = c;
-        lifts = l;
+        liftNames = l;
+        volumes = v;
     }
 
     @Override
     public int getCount() {
-        return lifts.size();
+        return liftNames.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return lifts.get(i);
+        return liftNames.get(i);
     }
 
     @Override
@@ -42,6 +43,8 @@ public class VolumeByLiftListAdapter extends BaseAdapter {
         TextView liftName = view.findViewById(R.id.tv_vblcc_liftname);
         TextView volume = view.findViewById(R.id.tv_vblcc_volume);
 
+        liftName.setText(liftNames.get(i));
+        volume.setText(String.valueOf(volumes.get(i))+"Ibs");
 
 
         return view;

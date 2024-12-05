@@ -20,7 +20,7 @@ public class MainMenu extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main_menu);
         btn_pastSessions = findViewById(R.id.btn_mm_pastsessions);
-        btn_myProgress = findViewById(R.id.btn_mm_progress);
+        btn_myProgress = findViewById(R.id.btn_mm_allsessions);
         btn_newSession = findViewById(R.id.btn_mm_newsession);
 
         createNewSession();
@@ -50,7 +50,7 @@ public class MainMenu extends AppCompatActivity {
         btn_pastSessions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainMenu.this, PastSessions.class));
+                startActivity(new Intent(MainMenu.this, ProgressMenu.class));
 
             }
         });

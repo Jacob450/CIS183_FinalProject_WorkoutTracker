@@ -50,7 +50,7 @@ public class LiftListAdapter extends BaseAdapter {
 
         liftName.setText(lift.getLiftType());
         reps.setText(String.valueOf(lift.getReps()));
-        weight.setText(String.valueOf(lift.getWeight()));
+        weight.setText(String.valueOf(lift.getWeight()) +"Ibs");
 
 
         return view;

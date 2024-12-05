@@ -17,17 +17,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String lifts_table_name = "lifts";
     private static final String lift_types_table_name = "lift_types";
     private static final String muscle_groups_table = "muscle_groups";
+    private static final String session_names_table_name = "session_names";
 
     public DatabaseHelper(Context c){
-        super(c,database_name, null, 8);
+        super(c,database_name, null, 12);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE " + users_table_name + "(userName varchar(50) primary key not null, password varchar(50), fName varchar (50), lName varchar(50), weight integer );");
-            db.execSQL("CREATE TABLE " + sessions_table_name + "(sessionID integer primary key autoincrement not null, sessionUserName varchar(50), sessionName varchar(50), sessionDate varchar(50));");
+            db.execSQL("CREATE TABLE " + sessions_table_name + "(sessionID integer primary key autoincrement not null, sessionUserName varchar(50), sessionNameID integer, sessionDate varchar(50));");
             db.execSQL("CREATE TABLE " + lifts_table_name+ "(liftID integer primary key autoincrement not null, sessionID integer, liftTypeID integer, reps integer, weight integer);");
             db.execSQL("CREATE TABLE " + lift_types_table_name + "(liftTypeID integer primary key autoincrement not null, liftName varchar(50), muscleGroupID integer)");
             db.execSQL("CREATE TABLE " + muscle_groups_table + "(muscleGroupID integer primary key autoincrement not null ,muscleGroupName varchar(50))");
+            db.execSQL("CREATE TABLE " + session_names_table_name + "(sessionNameID integer primary key autoincrement not null, sessionName varchar(50))");
     }
 
     @Override
@@ -37,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + lifts_table_name +";");
         db.execSQL("DROP TABLE IF EXISTS " + lift_types_table_name +";");
         db.execSQL("DROP TABLE IF EXISTS " + muscle_groups_table +";");
-
+        db.execSQL("DROP TABLE IF EXISTS " + session_names_table_name +";");
         onCreate(db);
 
     }
@@ -48,6 +50,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         initLifts();
         initLiftTypes();
         initMuscleGroups();
+        initSessionNames();
+    }
+
+    public void initSessionNames(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        if(countRecordsFromTable(session_names_table_name) == 0) {
+            db.execSQL("INSERT INTO " + session_names_table_name+"(sessionName) VALUES ('Chest')");
+            db.execSQL("INSERT INTO " + session_names_table_name+"(sessionName) VALUES ('Legs')");
+            db.execSQL("INSERT INTO " + session_names_table_name+"(sessionName) VALUES ('Back')");
+        }
+
+
     }
 
     public void initUsers(){
@@ -63,10 +77,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void initSessions(){
         SQLiteDatabase db = this.getWritableDatabase();
         if(countRecordsFromTable(sessions_table_name) == 0){
-            db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionName, sessionDate) VALUES ('jperez4', 'chest', '11/30/2024');");
-            db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionName, sessionDate) VALUES ('dperez', 'legs', '11/30/2024');");
-            db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionName, sessionDate) VALUES ('juicyj', 'back', '11/30/2024');");
-            db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionName, sessionDate) VALUES ('jperez4', 'chest', '11/31/2024');");
+            db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionNameID, sessionDate) VALUES ('jperez4', '1', '11/30/2024');");
+            db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionNameID, sessionDate) VALUES ('dperez', '2', '11/30/2024');");
+            db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionNameID, sessionDate) VALUES ('juicyj', '3', '11/30/2024');");
+            db.execSQL("INSERT INTO "+ sessions_table_name +"(sessionUserName, sessionNameID, sessionDate) VALUES ('jperez4', '1', '11/31/2024');");
         }
         db.close();
     }
@@ -115,9 +129,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //Inserting into DataBase
-    public void addSessionToDB(String un, String sn, String sd){
+    public void addSessionToDB(String un, int snID, String sd){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("INSERT INTO " + sessions_table_name + "(sessionUserName, sessionName, sessionDate) VALUES ('"+un+"','"+sn+"', '"+sd+"')");
+        db.execSQL("INSERT INTO " + sessions_table_name + "(sessionUserName, sessionNameID, sessionDate) VALUES ('"+un+"','"+snID+"', '"+sd+"')");
         db.close();
 
     }
@@ -131,6 +145,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //Getter query's=============================================================
+    public String getSessionName(int snID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT sessionName FROM " + session_names_table_name + " WHERE sessionNameID = '"+snID+"';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+        if(cursor.moveToFirst()){
+            return cursor.getString(0);
+        }else{
+            Log.e("DB Error", "Cannot find sessionName given " + snID);
+            return null;
+        }
+    }
+
+    public int getSessionNameID(String sn) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT sessionNameID FROM " + session_names_table_name + " WHERE sessionName = '" + sn + "';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        } else {
+            Log.e("DB Error", "Cannot find sessionName given " + sn);
+            return -999;
+        }
+    }
+
+    public ArrayList<String> getAllSessionNames(){
+        ArrayList<String> names = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT sessionName FROM " + session_names_table_name + ";";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+        if(cursor.moveToFirst()){
+            do{
+                names.add(cursor.getString(0));
+            }while(cursor.moveToNext());
+            return names;
+        }else{
+            Log.e("DB Error", "Cannot find sessionNames");
+            return null;
+        }
+    }
     public int getLiftTypeID(String liftName){
         SQLiteDatabase db = this.getReadableDatabase();
         String selectStatement = "SELECT liftTypeID FROM " + lift_types_table_name + " WHERE liftName = '"+liftName+"';";
@@ -145,14 +198,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<MySession> getAllSessionsForUser(String userName){
         ArrayList<MySession> sessions = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectStatement = "SELECT sessionID, sessionName, sessionDate FROM " + sessions_table_name + " WHERE sessionUserName = '"+userName+"';";
+        String selectStatement = "SELECT sessionID, sessionNameID, sessionDate FROM " + sessions_table_name + " WHERE sessionUserName = '"+userName+"';";
         Cursor cursor = db.rawQuery(selectStatement, null);
 
         if(cursor.moveToFirst()){
             do{
                 MySession s = new MySession();
                 s.setID(cursor.getInt(0));
-                s.setName(cursor.getString(1));
+                s.setName(getSessionName(cursor.getInt(1)));
                 s.setDate(cursor.getString(2));
                 s.setUserName(userName);
                 sessions.add(s);

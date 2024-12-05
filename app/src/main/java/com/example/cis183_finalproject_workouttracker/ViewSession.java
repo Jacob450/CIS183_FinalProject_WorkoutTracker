@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.health.connect.datatypes.units.Volume;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Adapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,11 +20,13 @@ import java.util.Objects;
 public class ViewSession extends AppCompatActivity {
     TextView tv_date;
     ListView lv_lifts;
+    ListView lv_volumes;
     MySession session;
     DatabaseHelper db;
     ArrayList<Lift> lifts;
     ArrayList<Integer> volumes;
     ArrayList<String> unqLiftTypes;
+    Button btn_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,8 @@ public class ViewSession extends AppCompatActivity {
 
         tv_date = findViewById(R.id.tv_vs_date);
         lv_lifts = findViewById(R.id.lv_vs_lifts);
+        lv_volumes = findViewById(R.id.lv_vs_volumeByLiftList);
+        btn_back = findViewById(R.id.btn_vs_back);
         lifts = db.getLiftsFromSession(session.getID());
 
         tv_date.setText(session.getDate());
@@ -42,10 +48,25 @@ public class ViewSession extends AppCompatActivity {
         fillLiftListView();
         unqLiftTypes = getUniqueLiftTypes();
         getVolume();
+
         for(int v : volumes){
             Log.i("Volume", String.valueOf(v));
         }
+        fillListView();
+    }
 
+    private void goBack(){
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
+    private void fillListView(){
+        ListAdapter adapter = new VolumeByLiftListAdapter(this, unqLiftTypes, volumes);
+        lv_volumes.setAdapter(adapter);
     }
 
     private void getVolume(){

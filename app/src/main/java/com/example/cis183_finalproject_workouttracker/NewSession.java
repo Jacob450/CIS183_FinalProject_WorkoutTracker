@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +23,8 @@ public class NewSession extends AppCompatActivity {
     DatabaseHelper db;
     Button btn_addNewSession;
     Button btn_goBack;
-    EditText et_sessionName;
+    Spinner sp_sessionName;
+    String sessionName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +34,33 @@ public class NewSession extends AppCompatActivity {
         lv_liftsToAdd = findViewById(R.id.lv_ns_liftstoadd);
         btn_addNewSession = findViewById(R.id.btn_ns_addsession);
         btn_goBack = findViewById(R.id.btn_ns_goback);
-        et_sessionName = findViewById(R.id.et_ns_sessionName);
+        sp_sessionName = findViewById(R.id.sp_ns_sessionName);
         db = new DatabaseHelper(this);
 
-
+        fillNamesSpinner();
         fillListView();
         confirmNewSession();
+        goBack();
 
 
+    }
+
+    private void fillNamesSpinner(){
+        ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, db.getAllSessionNames());
+        sp_sessionName.setAdapter(adapter);
+
+        sp_sessionName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i("Spinner", (String) sp_sessionName.getItemAtPosition(i));
+                sessionName = (String) sp_sessionName.getItemAtPosition(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     private void goBack(){
@@ -58,10 +81,9 @@ public class NewSession extends AppCompatActivity {
                     if(!Logged.liftsToAdd.isEmpty()){
 
                         Intent cns = new Intent(NewSession.this, ConfirmNewSession.class);
-                        cns.putExtra("session Name", et_sessionName.getText().toString());
+                        cns.putExtra("session Name", sessionName);
                         startActivity(cns);
                     }
-
 
             }
         });

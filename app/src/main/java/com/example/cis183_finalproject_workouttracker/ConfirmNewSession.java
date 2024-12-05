@@ -20,7 +20,7 @@ public class ConfirmNewSession extends AppCompatActivity {
     Button btn_goBack;
     Button btn_confirm;
     TextView tv_sessionName;
-
+    String sessionName;
 
 
     @Override
@@ -48,7 +48,7 @@ public class ConfirmNewSession extends AppCompatActivity {
     private void getSessionName(){
         Intent cameFrom = getIntent();
         if(Objects.requireNonNull(cameFrom.getExtras()).getString("session Name") != null){
-            String sessionName = cameFrom.getExtras().getString("session Name");
+            sessionName = cameFrom.getExtras().getString("session Name");
             tv_sessionName.setText(sessionName);
         }
     }
@@ -67,10 +67,10 @@ public class ConfirmNewSession extends AppCompatActivity {
     private void createNewSession(){
         //Inserting lifts into db
         String username = Logged.user.getUserName();
-        String sessionName = "Default";
         String date = Logged.getDate();
+        int sessionNameID = db.getSessionNameID(sessionName);
 
-        db.addSessionToDB(username, sessionName, date);
+        db.addSessionToDB(username, sessionNameID , date);
         //Inserting lifts into db
         int sessionID = db.getLastSessionIDForUser(username);
 

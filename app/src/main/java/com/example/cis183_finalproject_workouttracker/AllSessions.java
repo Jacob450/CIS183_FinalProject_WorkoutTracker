@@ -2,7 +2,6 @@ package com.example.cis183_finalproject_workouttracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -12,7 +11,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class AllSessions extends AppCompatActivity {
     ArrayList<MySession> sessions;
@@ -23,7 +21,7 @@ public class AllSessions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_my_progress);
+        setContentView(R.layout.activity_all_sessions);
         db = new DatabaseHelper(this);
         lv_userLifts = findViewById(R.id.lv_mp_userLifts);
 
