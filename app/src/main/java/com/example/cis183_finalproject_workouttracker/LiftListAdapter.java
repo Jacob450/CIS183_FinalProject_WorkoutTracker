@@ -41,6 +41,7 @@ public class LiftListAdapter extends BaseAdapter {
             LayoutInflater mInflator = (LayoutInflater) context.getSystemService(MainActivity.LAYOUT_INFLATER_SERVICE);
             view = mInflator.inflate(R.layout.lifts_custom_cell, null);
         }
+        notifyDataSetChanged();
 
         TextView liftName = view.findViewById(R.id.tv_lcc_liftname);
         TextView reps = view.findViewById(R.id.tv_lcc_reps);

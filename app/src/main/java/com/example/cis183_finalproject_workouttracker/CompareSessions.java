@@ -1,11 +1,13 @@
 package com.example.cis183_finalproject_workouttracker;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -17,62 +19,56 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CompareSessions extends AppCompatActivity {
 
     ListView lv_sessions;
     DatabaseHelper db;
     ConstraintLayout background;
-    ArrayList<Boolean> selected;
+    Button btn_compare;
 
+    ArrayList<MySession> userSessions;
+    ArrayList<MySession> sessionsToCompare;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_compare_sessions);
         lv_sessions = findViewById(R.id.lv_cs_sessions);
+        btn_compare = findViewById(R.id.btn_cs_compare);
         db = new DatabaseHelper(this);
+        userSessions = db.getAllSessionsForUser(Logged.user.getUserName());
+        sessionsToCompare = new ArrayList<>();
 
-        selected = new ArrayList<>();
-        setSelected();
+
 
         fillListView();
         onLVTap();
+        compare();
+
+
     }
 
-    private ArrayList<Integer> getSelectedIndex(){
-        ArrayList<Integer> indexes = new ArrayList<Integer>();
-        for(int i = 0; i < selected.size(); i++){
-            if(selected.get(i)){
-                indexes.add(i);
+    private void compare(){
+        btn_compare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Logged.sessionsToCompare = new ArrayList<>();
+                Logged.sessionsToCompare = sessionsToCompare;
+
+                startActivity(new Intent(CompareSessions.this, CompareLifts.class));
+
             }
-        }
-
-        for(int i : indexes){
-            Log.i("Selected index", String.valueOf(i));
-        }
-        return indexes;
+        });
     }
 
-    private int getSelectedCount(){
-        int selectedCount =0;
-        for(Boolean bool: selected){
-            if(bool){
-                selectedCount++;
-            }
-        }
 
-        return selectedCount;
-    }
 
-    private void setSelected(){
-        for(MySession session : db.getAllSessionsForUser(Logged.user.getUserName())){
-            selected.add(false);
+    private void logSessionsToCompare(){
+        for(MySession session: sessionsToCompare){
+            Log.i("Session", session.getName() +" "+session.getDate()+" "+ session.getUserName());
         }
-    }
-    private void fillListView(){
-        ListAdapter adapter = new SessionListAdapter(this, db.getAllSessionsForUser(Logged.user.getUserName()));
-        lv_sessions.setAdapter(adapter);
     }
 
     private void onLVTap(){
@@ -80,19 +76,32 @@ public class CompareSessions extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 background = view.findViewById(R.id.scc_backround);
-
-                if(!selected.get(i) && getSelectedCount() != 2){
-                    selected.set(i, true);
-                    background.setBackgroundColor(Color.GREEN);
-                }else {
-                    selected.set(i, false);
+                if (sessionsToCompare.contains(userSessions.get(i))){
+                    sessionsToCompare.remove(userSessions.get(i));
                     background.setBackgroundColor(Color.WHITE);
+
+                }else if(sessionsToCompare.size() < 2){
+                    sessionsToCompare.add(userSessions.get(i));
+                    background.setBackgroundColor(Color.GREEN);
                 }
-                getSelectedIndex();
 
 
 
+                Log.i("tap", String.valueOf(i));
+                logSessionsToCompare();
             }
         });
     }
+
+
+
+
+    private void fillListView(){
+        ListAdapter adapter = new SessionListAdapter(this, userSessions);
+        lv_sessions.setAdapter(adapter);
+    }
+
+
+
+
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -11,11 +12,13 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AllSessions extends AppCompatActivity {
     ArrayList<MySession> sessions;
     DatabaseHelper db;
     ListView lv_userLifts;
+    Button btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +27,35 @@ public class AllSessions extends AppCompatActivity {
         setContentView(R.layout.activity_all_sessions);
         db = new DatabaseHelper(this);
         lv_userLifts = findViewById(R.id.lv_mp_userLifts);
+        btn_back = findViewById(R.id.btn_as_back);
 
-        sessions = db.getAllSessionsForUser(Logged.user.getUserName());
+        Intent camefrom = getIntent();
+
+        if(camefrom.getExtras() != null){
+            String userName = camefrom.getExtras().getString("userName");
+            sessions = db.getAllSessionsForUser(userName);
+        }else{
+            sessions = db.getAllSessionsForUser(Logged.user.getUserName());
+        }
 
 
 
-        fillListView();
-        loadSession();
 
+        if(sessions!= null){
+            fillListView();
+            loadSession();
+        }
+
+
+    }
+
+    private void go_back(){
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void loadSession(){

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_clcc_lift2Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="15dp"
+        android:text="lift 2 name"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_lcc_weight14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ibs"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_clcc_lift2weight"
+        app:layout_constraintStart_toEndOf="@+id/tv_clcc_lift2weight" />
+
+    <TextView
+        android:id="@+id/tv_lcc_weight13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="x"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_clcc_lift2reps"
+        app:layout_constraintTop_toBottomOf="@+id/tv_clcc_lift2Name" />
+
+    <TextView
+        android:id="@+id/tv_clcc_lift2reps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="312dp"
+        android:text="w"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_lcc_weight13"
+        app:layout_constraintStart_toStartOf="@+id/tv_clcc_lift1name" />
+
+    <TextView
+        android:id="@+id/tv_clcc_lift2weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="w"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_lcc_weight13"
+        app:layout_constraintTop_toBottomOf="@+id/tv_clcc_lift2Name" />
+
+    <TextView
+        android:id="@+id/tv_clcc_lift1name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="lift 1 name"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_clcc_lift1reps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="w"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_lcc_weight9"
+        app:layout_constraintStart_toStartOf="@+id/tv_clcc_lift1name" />
+
+    <TextView
+        android:id="@+id/tv_lcc_weight8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ibs"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_clcc_lift1weight"
+        app:layout_constraintStart_toEndOf="@+id/tv_clcc_lift1weight" />
+
+    <TextView
+        android:id="@+id/tv_clcc_lift1weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="w"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_lcc_weight9"
+        app:layout_constraintStart_toEndOf="@+id/tv_lcc_weight9" />
+
+    <TextView
+        android:id="@+id/tv_lcc_weight9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="x"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_clcc_lift1reps"
+        app:layout_constraintTop_toBottomOf="@+id/tv_clcc_lift1name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String session_names_table_name = "session_names";
 
     public DatabaseHelper(Context c){
-        super(c,database_name, null, 12);
+        super(c,database_name, null, 13);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -145,6 +145,85 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //Getter query's=============================================================
+    public int getNumberOfSessions(String un){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT COUNT(*) FROM "+sessions_table_name+" WHERE sessionUserName = '"+un+"';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+
+        if(cursor.moveToFirst() && !cursor.isNull(0)){
+            return cursor.getInt(0);
+        }else{
+            Log.e("DB Error", "Could not get session count" + un);
+            return 0;
+        }
+    }
+    public ArrayList<User> getAllUsersExcluding(String un){
+        ArrayList<User> users = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT userName, password, fname, lname, weight FROM "+users_table_name+";";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+        if (cursor.moveToFirst()){
+
+            do{
+                User u = new User();
+                u.setUserName(cursor.getString(0));
+                u.setPassword(cursor.getString(1));
+                u.setFname(cursor.getString(2));
+                u.setLname(cursor.getString(3));
+                u.setWeight(cursor.getInt(4));
+                users.add(u);
+            }while (cursor.moveToNext());
+            User utr = Logged.user;
+            if(users.remove(utr)){
+                Log.e("DB", "Removed " + Logged.user.getUserName());
+            }else{
+                Log.e("DB", "could not remove " + Logged.user.getUserName());
+            }
+
+            return users;
+        }else{
+            Log.e("DB Error", "Could not get all users ");
+            return null;
+        }
+    }
+
+    public String getDateFromLift(int lID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT sessionDate FROM " + sessions_table_name + " INNER JOIN "+lifts_table_name+" on "+sessions_table_name+".sessionID = "+lifts_table_name+".sessionID WHERE liftID = '"+lID+"';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+
+        if(cursor.moveToFirst()){
+            return cursor.getString(0);
+        }else{
+            Log.e("DB Error", "Cannot find Date given liftID "+ lID );
+            return null;
+        }
+    }
+
+    public ArrayList<Lift> getAllLiftsFromUserOfType(String un, int ltID){
+        ArrayList<Lift> lifts = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT reps, weight  FROM " + lifts_table_name + " INNER JOIN "+sessions_table_name+" ON "+sessions_table_name+".sessionID = "+lifts_table_name+".sessionID  INNER JOIN " + lift_types_table_name + " ON "+lifts_table_name+".liftTypeID = "+lift_types_table_name+".liftTypeID WHERE sessionUserName = '"+un+"' AND "+lifts_table_name+".liftTypeID = '"+ltID+"';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Lift lift = new Lift();
+                lift.setLiftID(ltID);
+                lift.setLiftType(getLiftTypeGivenLiftTypeID(ltID));
+                lift.setReps(cursor.getInt(0));
+                lift.setWeight(cursor.getInt(1));
+                Log.i("Lift: ", lift.getLiftType()+", "+lift.getReps()+", "+lift.getWeight());
+                lifts.add(lift);
+            }while(cursor.moveToNext());
+            return lifts;
+        }else{
+            Log.e("DB Error", "Cannot find lifts given " + un +" and " + String.valueOf(ltID));
+            return null;
+        }
+
+    }
+
     public String getSessionName(int snID){
         SQLiteDatabase db = this.getReadableDatabase();
         String selectStatement = "SELECT sessionName FROM " + session_names_table_name + " WHERE sessionNameID = '"+snID+"';";
@@ -367,6 +446,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public Lift getBestLift(String un){
+        int weight;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT MAX(weight) FROM " + lifts_table_name + " INNER JOIN "+sessions_table_name+" ON "+sessions_table_name+".sessionID = "+lifts_table_name+".sessionID   WHERE sessionUserName = '"+un+"';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+
+        if(cursor.moveToFirst()) {
+            weight = cursor.getInt(0);
+            return findLift(un, weight);
+        }else{
+            Log.e("DB ERROR", "Could not find max weight given " +un);
+            return null;
+        }
+    }
+
+    public Lift findLift(String un, int weight){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT liftID, liftTypeID, reps, weight FROM " + lifts_table_name + " INNER JOIN "+sessions_table_name+" ON "+sessions_table_name+".sessionID = "+lifts_table_name+".sessionID WHERE weight = '"+weight+"' AND sessionUserName = '"+un+"';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+        if(cursor.moveToFirst()){
+            Lift lift = new Lift();
+            lift.setLiftID(cursor.getInt(0));
+            lift.setLiftType(getLiftTypeGivenLiftTypeID(cursor.getInt(1)));
+            lift.setReps(cursor.getInt(2));
+            lift.setWeight(cursor.getInt(3));
+            return lift;
+        }else{
+            Log.e("DB ERROR", "Could not find lift given " +un + weight);
+            Lift lift = new Lift();
+            lift.setLiftType("NONE");
+            return lift;
+        }
+    }
 
 
     public int countRecordsFromTable(String tableName)

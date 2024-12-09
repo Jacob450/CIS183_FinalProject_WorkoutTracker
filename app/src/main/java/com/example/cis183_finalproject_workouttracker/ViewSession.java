@@ -27,6 +27,9 @@ public class ViewSession extends AppCompatActivity {
     ArrayList<Integer> volumes;
     ArrayList<String> unqLiftTypes;
     Button btn_back;
+    TextView btn_allLifts;
+    TextView btn_viewVolume;
+    Boolean viewingLifts = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,18 +44,39 @@ public class ViewSession extends AppCompatActivity {
         lv_lifts = findViewById(R.id.lv_vs_lifts);
         lv_volumes = findViewById(R.id.lv_vs_volumeByLiftList);
         btn_back = findViewById(R.id.btn_vs_back);
+        btn_allLifts = findViewById(R.id.btn_vs_viewLifts);
+        btn_viewVolume = findViewById(R.id.btn_vs_viewVolumes);
         lifts = db.getLiftsFromSession(session.getID());
 
-        tv_date.setText(session.getDate());
-
-        fillLiftListView();
         unqLiftTypes = getUniqueLiftTypes();
         getVolume();
 
-        for(int v : volumes){
-            Log.i("Volume", String.valueOf(v));
-        }
-        fillListView();
+        tv_date.setText(session.getDate());
+
+        switchListener();
+        fillLiftListView();
+        goBack();
+    }
+
+    private void switchListener(){
+        btn_viewVolume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewingLifts = false;
+                fillVolumesListView();
+                Log.e("bool", viewingLifts.toString());
+
+            }
+        });
+        btn_allLifts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewingLifts = true;
+                fillLiftListView();
+                Log.e("bool", viewingLifts.toString());
+
+            }
+        });
     }
 
     private void goBack(){
@@ -64,9 +88,11 @@ public class ViewSession extends AppCompatActivity {
         });
     }
 
-    private void fillListView(){
+    private void fillVolumesListView(){
         ListAdapter adapter = new VolumeByLiftListAdapter(this, unqLiftTypes, volumes);
-        lv_volumes.setAdapter(adapter);
+
+        lv_lifts.setAdapter(adapter);
+
     }
 
     private void getVolume(){

@@ -7,6 +7,8 @@ public class Lift {
     private int reps;
     private int weight;
 
+    public int getVolume(){return weight * reps;}
+
     public int getLiftID() {
         return LiftID;
     }

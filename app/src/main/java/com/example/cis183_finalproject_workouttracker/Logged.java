@@ -11,10 +11,13 @@ public class Logged
     static User user;
     static ArrayList<Lift> liftsToAdd;
     static Lift liftToDelete;
+    static ArrayList<MySession> sessionsToCompare;
 
     static public String getDate(){
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(date);
     }
+
+
 }
