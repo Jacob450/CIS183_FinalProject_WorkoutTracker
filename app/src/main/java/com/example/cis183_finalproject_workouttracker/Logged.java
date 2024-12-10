@@ -1,5 +1,6 @@
 package com.example.cis183_finalproject_workouttracker;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -18,6 +19,7 @@ public class Logged
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(date);
     }
+
 
 
 }

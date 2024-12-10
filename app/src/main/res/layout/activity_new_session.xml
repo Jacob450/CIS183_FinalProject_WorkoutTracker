@@ -5,7 +5,42 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#121212"
     tools:context=".NewSession">
+
+    <TextView
+        android:id="@+id/tv_ns_newLiftType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="144dp"
+        android:layout_marginTop="44dp"
+        android:background="#121212"
+        android:fontFamily="@font/audiowide"
+        android:linksClickable="false"
+        android:outlineProvider="none"
+        android:text="Add Lift Types"
+        android:textColor="#9E74FF"
+        android:textColorLink="#D0BCFF"
+        android:textIsSelectable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sp_ns_sessionName" />
+
+    <TextView
+        android:id="@+id/tv_ns_newMusclegroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="16dp"
+        android:background="#121212"
+        android:fontFamily="@font/audiowide"
+        android:linksClickable="false"
+        android:outlineProvider="none"
+        android:text="Add Muscle Groups"
+        android:textColor="#9E74FF"
+        android:textColorLink="#D0BCFF"
+        android:textIsSelectable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sp_ns_sessionName" />
 
     <TextView
         android:id="@+id/textView3"
@@ -14,6 +49,7 @@
         android:layout_marginTop="28dp"
         android:fontFamily="@font/audiowide"
         android:text="New Session"
+        android:textColor="#D0BCFF"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,17 +57,19 @@
 
     <ListView
         android:id="@+id/lv_ns_liftstoadd"
-        android:layout_width="398dp"
-        android:layout_height="0dp"
+        android:layout_width="394dp"
+        android:layout_height="359dp"
         android:layout_marginStart="3dp"
-        android:layout_marginTop="120dp"
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="134dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_ns_addNewLifttypes"
+        android:backgroundTint="#CA1A1A"
+        android:cacheColorHint="#F6F4F4"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.739" />
 
     <Button
         android:id="@+id/btn_ns_addsession"
@@ -53,17 +91,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btn_ns_addsession" />
 
-    <Button
-        android:id="@+id/btn_ns_addNewLifttypes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="16dp"
-        android:text="Add New Lift Types"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_ns_goback"
-        app:layout_constraintTop_toBottomOf="@+id/lv_ns_liftstoadd" />
-
     <Spinner
         android:id="@+id/sp_ns_sessionName"
         android:layout_width="202dp"
@@ -75,4 +102,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_ns_newsessionNames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="11dp"
+        android:background="#121212"
+        android:fontFamily="@font/audiowide"
+        android:linksClickable="false"
+        android:outlineProvider="none"
+        android:text="Add Session Types"
+        android:textColor="#9E74FF"
+        android:textColorLink="#D0BCFF"
+        android:textIsSelectable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sp_ns_sessionName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

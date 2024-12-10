@@ -13,6 +13,21 @@
         android:theme="@style/Theme.CIS183_FinalProject_WorkoutTracker"
         tools:targetApi="31">
         <activity
+            android:name=".AppendSession"
+            android:exported="false" />
+        <activity
+            android:name=".NewSessionName"
+            android:exported="false" />
+        <activity
+            android:name=".EditDatabaseMenu"
+            android:exported="false" />
+        <activity
+            android:name=".NewLiftType"
+            android:exported="false" />
+        <activity
+            android:name=".NewMuscleGroup"
+            android:exported="false" />
+        <activity
             android:name=".CompareToOtherUsers"
             android:exported="false" />
         <activity

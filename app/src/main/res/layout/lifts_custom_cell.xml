@@ -2,8 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/back"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#424141">
 
     <TextView
         android:id="@+id/tv_lcc_weight4"
@@ -11,9 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/audiowide"
         android:text="x"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textColor="#D0BCFF"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_lcc_reps"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,9 +27,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="28dp"
+        android:fontFamily="@font/audiowide"
         android:text="Reps"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textColor="#D0BCFF"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,9 +41,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/audiowide"
         android:text="w"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textColor="#D0BCFF"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_lcc_weight2"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,9 +55,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/audiowide"
         android:text="w"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textColor="#D0BCFF"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_lcc_reps2"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,9 +69,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/audiowide"
         android:text="Ibs"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textColor="#D0BCFF"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_lcc_weight4"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,10 +83,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/audiowide"
         android:text="lift name"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textSize="20sp"
+        android:textColor="#D0BCFF"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

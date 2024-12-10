@@ -2,6 +2,7 @@ package com.example.cis183_finalproject_workouttracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,6 +13,8 @@ public class MainMenu extends AppCompatActivity {
     Button btn_pastSessions;
     Button btn_myProgress;
     Button btn_newSession;
+    Button btn_editDatabase;
+    DatabaseHelper db;
 
 
     @Override
@@ -23,10 +26,18 @@ public class MainMenu extends AppCompatActivity {
         btn_myProgress = findViewById(R.id.btn_mm_allsessions);
         btn_newSession = findViewById(R.id.btn_mm_newsession);
 
+        db = new DatabaseHelper(this);
+
         createNewSession();
         viewMyProgress();
         viewPastSessions();
+
+
     }
+
+
+
+
 
     private void createNewSession(){
         btn_newSession.setOnClickListener(new View.OnClickListener() {

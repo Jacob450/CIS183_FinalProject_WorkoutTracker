@@ -110,11 +110,12 @@ public class ProgressGraph extends AppCompatActivity {
         //DataPoint point = new DataPoint(new Date(), );----------------------------------------
 
         for (int i=0; i < lifts.size();i++){
-            Date d = formatDate(lifts.get(i).getLiftID());
+
             int v = lifts.get(i).getVolume();
-            series.appendData(new DataPoint(i,v), true, lifts.size());
+            series.appendData(new DataPoint(i+1,v), true, lifts.size());
         }
         graph.addSeries(series);
+
 
     }
 

@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String session_names_table_name = "session_names";
 
     public DatabaseHelper(Context c){
-        super(c,database_name, null, 13);
+        super(c,database_name, null, 16);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -96,6 +96,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('4', '1', '6', '195');");
             db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('4', '2', '6', '155');");
             db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('4', '3', '6', '90');");
+            //juicy j
+            db.execSQL("INSERT INTO "+ lifts_table_name +"(sessionID, liftTypeID, reps, weight) VALUES ('3', '3', '6', '90');");
         }
         db.close();
     }
@@ -121,6 +123,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
     //Deleting from Database
+    public boolean deleteSession(int sessionID){
+        if(getLiftsFromSession(sessionID).isEmpty()){
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.execSQL("DELETE FROM " + sessions_table_name + " WHERE sessionID = '"+sessionID+"'");
+            db.close();
+            return true;
+        }else{
+            Log.e("DB error", "Cannot delete Session with Lifts");
+            return false;
+        }
+
+    }
 
     public void deleteLift(int liftID){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -129,6 +143,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //Inserting into DataBase
+    public void addSessionName(String name){
+        if(!getAllSessionNames().contains(name)){
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.execSQL("INSERT INTO "+ session_names_table_name + "(sessionName) VALUES ('"+name+"')");
+            db.close();
+        }else{
+            Log.e("DB error", "session name: " +name+"already exist");
+        }
+
+    }
+    public void addLiftTypeToDB(String lt, int mgID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO "+ lift_types_table_name + "(liftName, muscleGroupID) VALUES ('"+lt+"', '"+mgID+"')");
+        db.close();
+
+    }
+
+    public void addMuscleGroupToDB(String mg){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO "+ muscle_groups_table + "(muscleGroupName) VALUES ('"+mg+"')");
+        db.close();
+    }
     public void addSessionToDB(String un, int snID, String sd){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("INSERT INTO " + sessions_table_name + "(sessionUserName, sessionNameID, sessionDate) VALUES ('"+un+"','"+snID+"', '"+sd+"')");
@@ -145,6 +181,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //Getter query's=============================================================
+
+
+    int getMuscleGroupID(String mgName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT muscleGroupID FROM "+muscle_groups_table+" WHERE muscleGroupName = '"+mgName+"';";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+        if(cursor.moveToFirst()){
+            return cursor.getInt(0);
+        }else{
+            Log.e("DB Error", "Could not get muscleGroupID given " + mgName);
+            return -999;
+        }
+    }
+    public ArrayList<String> getAllMuscleGroups(){
+        ArrayList<String> groups = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectStatement = "SELECT muscleGroupName FROM "+muscle_groups_table+" ;";
+        Cursor cursor = db.rawQuery(selectStatement, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                groups.add(cursor.getString(0));
+            }while (cursor.moveToNext());
+            return groups;
+        }else{
+            Log.e("DB Error", "Could not get muscleGroups ");
+            return null;
+        }
+    }
     public int getNumberOfSessions(String un){
         SQLiteDatabase db = this.getReadableDatabase();
         String selectStatement = "SELECT COUNT(*) FROM "+sessions_table_name+" WHERE sessionUserName = '"+un+"';";

@@ -2,6 +2,7 @@ package com.example.cis183_finalproject_workouttracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -39,6 +40,7 @@ public class CompareToOtherUsers extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String username = users.get(i).getUserName();
                 Intent as = new Intent(CompareToOtherUsers.this, AllSessions.class);
+                Log.d("Sent", username);
                 as.putExtra("username", username);
                 startActivity(as);
             }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -30,6 +31,7 @@ public class ViewSession extends AppCompatActivity {
     TextView btn_allLifts;
     TextView btn_viewVolume;
     Boolean viewingLifts = true;
+    Button btn_append;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +48,9 @@ public class ViewSession extends AppCompatActivity {
         btn_back = findViewById(R.id.btn_vs_back);
         btn_allLifts = findViewById(R.id.btn_vs_viewLifts);
         btn_viewVolume = findViewById(R.id.btn_vs_viewVolumes);
+        btn_append = findViewById(R.id.btn_vs_append);
         lifts = db.getLiftsFromSession(session.getID());
+
 
         unqLiftTypes = getUniqueLiftTypes();
         getVolume();
@@ -55,7 +59,35 @@ public class ViewSession extends AppCompatActivity {
 
         switchListener();
         fillLiftListView();
+        deleteLift();
+        appendSession();
         goBack();
+    }
+
+    private void appendSession(){
+        btn_append.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent append = new Intent(ViewSession.this, AppendSession.class);
+                append.putExtra("Session", getSession());
+                startActivity(append);
+            }
+        });
+
+    }
+
+    private void deleteLift(){
+        lv_lifts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                db.deleteLift( lifts.get(i).getLiftID());
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+                return false;
+            }
+        });
     }
 
     private void switchListener(){
@@ -83,7 +115,8 @@ public class ViewSession extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+
+                startActivity(new Intent(ViewSession.this, AllSessions.class));
             }
         });
     }

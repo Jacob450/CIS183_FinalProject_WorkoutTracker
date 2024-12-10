@@ -8,28 +8,6 @@
     tools:context=".MainMenu">
 
     <Button
-        android:id="@+id/btn_mm_addlifts"
-        android:layout_width="185dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="310dp"
-        android:text="Add to Database"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_mm_pastsessions" />
-
-    <Button
-        android:id="@+id/btn_mm_pastsessions"
-        android:layout_width="185dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="25dp"
-        android:text="Progress"
-        app:layout_constraintBottom_toTopOf="@+id/btn_mm_addlifts"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_mm_allsessions" />
-
-    <Button
         android:id="@+id/btn_mm_allsessions"
         android:layout_width="185dp"
         android:layout_height="0dp"
@@ -41,10 +19,21 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_mm_newsession" />
 
     <Button
+        android:id="@+id/btn_mm_pastsessions"
+        android:layout_width="185dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="252dp"
+        android:text="Progress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_mm_allsessions" />
+
+    <Button
         android:id="@+id/btn_mm_newsession"
         android:layout_width="185dp"
         android:layout_height="0dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="245dp"
         android:layout_marginBottom="27dp"
         android:text="Start New Session"
         app:layout_constraintBottom_toTopOf="@+id/btn_mm_allsessions"

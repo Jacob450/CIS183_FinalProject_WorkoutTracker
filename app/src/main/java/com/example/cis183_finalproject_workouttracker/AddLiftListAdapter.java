@@ -1,6 +1,7 @@
 package com.example.cis183_finalproject_workouttracker;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -35,6 +36,14 @@ public class AddLiftListAdapter extends BaseAdapter {
     AddLiftListAdapter(Context c){
         context = c;
         lifts = new ArrayList<>();
+        db = new DatabaseHelper(c);
+        lifts.add(new Lift());
+        Logged.liftsToAdd = new ArrayList<Lift>();
+    }
+
+    AddLiftListAdapter(Context c, ArrayList<Lift> list){
+        context = c;
+        lifts = list;
         db = new DatabaseHelper(c);
         lifts.add(new Lift());
         Logged.liftsToAdd = new ArrayList<Lift>();
@@ -135,7 +144,10 @@ public class AddLiftListAdapter extends BaseAdapter {
                     lifts.get(index).setWeight(weight);
 
                     Logged.liftsToAdd = lifts;
-                    lifts.add(new Lift());
+                    lifts.add(new Lift() );
+                    lifts.get(i+1).setLiftType(selectedLiftType);
+                    lifts.get(i+1).setWeight(weight);
+
 
                     tv_addLift.setVisibility(View.INVISIBLE);
                     tv_removeLift.setVisibility(View.VISIBLE);
@@ -162,9 +174,9 @@ public class AddLiftListAdapter extends BaseAdapter {
     private void spinnerListner(){
         sp_liftTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
                 selectedLiftType = (String) sp_liftTypes.getItemAtPosition(i);
-
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.rgb(208,188,255));
                 //Log.i("Selected spinner index", String.valueOf(i));
             }
 
@@ -199,12 +211,15 @@ public class AddLiftListAdapter extends BaseAdapter {
         });
 
 
+
+
     }
 
 
     private void fillSpinner (Spinner sp){
         lt = db.getAllLiftTypes();
         ArrayAdapter adapter =  new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, lt);
+
         sp.setAdapter(adapter);
     }
 
